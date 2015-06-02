@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.martinpernica.mynativeapplication1"
+        minSdkVersion 21
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            moduleName "native_lib"
+            ldLibs "EGL", "GLESv3", "dl", "log"         // Link with these libraries!
+            stl "stlport_shared"                        // Use shared stlport library
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = ["src/main/jni"] // This prevents the auto generation of Android.mk
+        jniLibs.srcDirs = ["libs"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
